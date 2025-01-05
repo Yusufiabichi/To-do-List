@@ -1,73 +1,174 @@
-// // Get the modal
-// var modal = document.getElementById("myModal");
+// // alert("hello world")
+// const todoForm = document.querySelector('form');
+// const todoInput = document.getElementById('todo-input');
+// const todoListUL =document.getElementById('todo-list');
 
-// // Get the buttons that open the modal
-// var btns = document.querySelectorAll(".openModalBtn");
+// let allTodos = getTodos();
+// console.log(allTodos);
+// updateTodoList();
 
-// // Get the <span> element that closes the modal
-// var span = document.getElementsByClassName("close")[0];
 
-// // Get the button that closes the modal inside the modal content
-// var closeModalBtn = document.getElementById("closeModalBtn");
-
-// // Loop through each button and add an event listener to open the modal
-// btns.forEach(function(btn) {
-//   btn.onclick = function() {
-//     modal.style.display = "block";
-//   }
-// });
-
-// // When the user clicks on <span> (x), close the modal
-// span.onclick = function() {
-//   modal.style.display = "none";
+// todoForm.addEventListener('submit', function(e){
+//     e.preventDefault();
+//     addTodo();
+// })
+// function addTodo(){
+//     const todoText = todoInput.value.trim();
+//     if(todoText.length > 0){
+//         const todoObject = {
+//             text: todoText,
+//             completed: false
+//         }
+//         allTodos.push(todoObject);
+//         updateTodoList();
+//         saveTodos();
+//         todoInput.value = "";
+//     }
 // }
 
-// // When the user clicks the close button inside the modal, close the modal
-// closeModalBtn.onclick = function() {
-//   modal.style.display = "none";
+// function updateTodoList (){
+//     todoListUL.innerHTML = "";
+//     allTodos.forEach((todo, todoIndex)=>{
+//         todoItem = createTodoItem(todo, todoIndex);
+//         todoListUL.append(todoItem);
+//     });
+// }
+// function createTodoItem(todo, todoIndex){
+//     const todoId = "todo-"+todoIndex;
+//     const todoLI = document.createElement("li");
+//     todoLI.className = "todo";
+//     todoLI.innerHTML = `
+//             <input type="checkbox" id="${todoId}">
+//             <label for="${todoId}" class="custom-checkbox">
+//                 <svg class="svg" fill="transparent" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+//                     <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
+//                 </svg>
+//             </label>
+//             <label for="${todoId}" class="todo-text">
+//             ${todo}
+//             </label>
+//             <button class="delete-button">
+//                 <svg class="svg" fill="var(--secondary-color)"  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+//                     <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+//                 </svg>
+//             </button>
+// `
+
+//     // todoListUL.append(todoLI);
+//     const deleteButton = todoLI.querySelector(".delete-button");
+//     deleteButton.addEventListener("click", ()=>{
+//         deleteTodoItem(todoIndex);
+//     })
+//     // deleteButton.onclick = function() {
+//     //     deleteTodoItem(todoIndex);
+//     // };
+//     return todoLI;
+// }
+// function deleteTodoItem(todoIndex){
+//     allTodos = allTodos.filter((_, i) => i !== todoIndex);
+//     saveTodos();
+//     updateTodoList();
+// }
+// function saveTodos(){
+//     const todosJson = JSON.stringify(allTodos);
+//     localStorage.setItem("todos", todosJson);
 // }
 
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function(event) {
-//   if (event.target == modal) {
-//     modal.style.display = "none";
-//   }
+// function getTodos(){
+//     const todos = localStorage.getItem("todos") || "[]";
+//     return JSON.parse(todos);
 // }
 
 
 
 
-const taskInput = document.getElementById("new-task");
-const addTaskBtn = document.getElementById("add-task-btn");
-const taskList = document.getElementById("task-list");
 
 
-function addTask() {
-  const taskText = taskInput.value.trim();
-  
-  if(taskText !== ''){
-    const li = document.createElement('li');
-    li.textContent = taskText;
 
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Remove';
-    removeBtn.onclick = () => {
-      taskList.removeChild(li);
-    };
 
-    li.appendChild(removeBtn);
-    taskList.appendChild(li);
-    taskInput.value = "";
-  }
+const todoForm = document.querySelector('form');
+const todoInput = document.getElementById('todo-input');
+const todoListUL = document.getElementById('todo-list');
+
+let allTodos = getTodos();
+console.log(allTodos);
+updateTodoList();
+
+todoForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    addTodo();
+});
+
+function addTodo() {
+    const todoText = todoInput.value.trim();
+    if (todoText.length > 0) {
+        const todoObject = {
+            text: todoText,
+            completed: false
+        }
+        allTodos.push(todoObject);
+        updateTodoList();
+        saveTodos();
+        todoInput.value = "";
+    }
 }
 
-// addTaskBtn.addEventListener("click", addTask);
-addTaskBtn.onclick = () => {
-  addTask();
-};
+function updateTodoList() {
+    todoListUL.innerHTML = "";
+    allTodos.forEach((todo, todoIndex) => {
+        const todoItem = createTodoItem(todo, todoIndex);
+        todoListUL.append(todoItem);
+    });
+}
 
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addTask();
-  }
-});
+function createTodoItem(todo, todoIndex) {
+    const todoId = "todo-" + todoIndex;
+    const todoLI = document.createElement("li");
+    const todoText = todo.text;
+    todoLI.className = "todo";
+    todoLI.innerHTML = `
+        <input type="checkbox" id="${todoId}">
+        <label for="${todoId}" class="custom-checkbox">
+            <svg class="svg" fill="transparent" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
+            </svg>
+        </label>
+        <label for="${todoId}" class="todo-text">
+        ${todoText}
+        </label>
+        <button class="delete-button">
+            <svg class="svg" fill="var(--secondary-color)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+            </svg>
+        </button>
+    `;
+
+    const deleteButton = todoLI.querySelector(".delete-button");
+    deleteButton.addEventListener("click", () => {
+        deleteTodoItem(todoIndex);
+    });
+    const checkBox = todoLI.querySelector("input");
+    checkBox.addEventListener("change", ()=> {
+        allTodos[todoIndex].completed = checkBox.checked;
+        saveTodos();
+    })
+    checkBox.checked = todo.completed;
+    
+    return todoLI;
+}
+
+function deleteTodoItem(todoIndex) {
+    allTodos = allTodos.filter((_, i) => i !== todoIndex);
+    saveTodos();
+    updateTodoList();
+}
+
+function saveTodos() {
+    const todosJson = JSON.stringify(allTodos);
+    localStorage.setItem("todos", todosJson);
+}
+
+function getTodos() {
+    const todos = localStorage.getItem("todos") || "[]";
+    return JSON.parse(todos);
+}
